@@ -17,7 +17,6 @@ public class FoodManager : MonoBehaviour
     public float minSpawnInterval = 3f;
     public float maxSpawnInterval = 6f;
     public float foodLifetime = 10f;
-    public int minSnakeLengthForMassBurner = 2; // Minimum length required to spawn Mass Burner food.
     public Food[] foods; // Array of food configurations.
 
     private void Awake()

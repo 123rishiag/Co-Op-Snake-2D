@@ -5,7 +5,7 @@ using UnityEngine;
 public class SnakeCollisionController : MonoBehaviour
 {
     private LayerMask collisionLayer; // This will be fetched from the parent object
-    SnakeController snakeController;
+    private SnakeController snakeController;
     private void Start()
     {
         snakeController = GetComponentInParent<SnakeController>();
@@ -22,7 +22,7 @@ public class SnakeCollisionController : MonoBehaviour
     {
         int collisionLayerIndex = (int)Mathf.Log(collisionLayer.value, 2);
         // Check for self-collision using layers and tags
-        if (collider2D.gameObject.layer == collisionLayerIndex)
+        if (collider2D.gameObject.layer == collisionLayerIndex && snakeController.isShieldPowerUpActive == false)
         {
             // Check if the application is running in the Unity Editor.
             #if UNITY_EDITOR
@@ -46,6 +46,23 @@ public class SnakeCollisionController : MonoBehaviour
             {
                 snakeController.ReduceBodySegment(FoodManager.Instance.GetFoodAffectedLength(foodType));
                 snakeController.DecreaseScore(FoodManager.Instance.GetFoodAffectedScore(foodType));
+            }
+            Destroy(collider2D.gameObject);
+        }
+        else if (LayerMask.LayerToName(collider2D.gameObject.layer) == "PowerUp")
+        {
+            PowerUpType powerUpType = PowerUpManager.Instance.GetPowerUpType(collider2D.gameObject.name);
+            if (powerUpType == PowerUpType.ScoreBoostPowerUp)
+            {
+                StartCoroutine(snakeController.ActivateScoreBoostPowerUp());
+            }
+            else if (powerUpType == PowerUpType.ShieldPowerUp)
+            {
+                StartCoroutine(snakeController.ActivateShieldPowerUp());
+            }
+            else if (powerUpType == PowerUpType.SpeedUpPowerUp)
+            {
+                StartCoroutine(snakeController.ActivateSpeedUpPowerUp());
             }
             Destroy(collider2D.gameObject);
         }
