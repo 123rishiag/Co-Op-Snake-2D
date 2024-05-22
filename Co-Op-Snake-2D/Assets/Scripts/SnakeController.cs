@@ -11,8 +11,8 @@ public class SnakeController : MonoBehaviour
     public float moveStep = 1f; // The distance the snake moves each step
     public Camera mainCamera; // Reference to the main camera
 
-    private GameObject snakeHead; // Object for the snake head segment
-    private GameObject snakeBody; // Object for the snake body segment
+    public GameObject snakeHeadPrefab; // Object for the snake head Prefab
+    public GameObject snakeBodyPrefab; // Object for the snake body Prefab
     private Vector2 direction = Vector2.left; // Initial direction of movement
     private List<Transform> snakeSegments; // List to hold snake segments
     private List<Vector2> previousPositions; // List to hold previous positions of the snake segments
@@ -21,8 +21,6 @@ public class SnakeController : MonoBehaviour
 
     private void Awake()
     {
-        snakeHead = transform.Find("Head").gameObject;
-        snakeBody = snakeHead.transform.Find("Body").gameObject;
         snakeSegments = new List<Transform>();
         previousPositions = new List<Vector2>();
     }
@@ -45,20 +43,10 @@ public class SnakeController : MonoBehaviour
 
     private void InitializeBodySegment()
     {
-        Vector2 newSegmentPosition;
-        snakeSegments.Add(snakeHead.transform);
-        previousPositions.Add(snakeHead.transform.position);
-        snakeSegments.Add(snakeBody.transform);
-        previousPositions.Add(snakeBody.transform.position);
-        newSegmentPosition = snakeBody.transform.position;
-        if (initialBodySize == 0)
-        {
-            AddBodySegment(0);
-        }
-        else
-        {
-            AddBodySegment(initialBodySize - 1);
-        }
+        GameObject headSegment = Instantiate(snakeHeadPrefab, snakeHeadPrefab.transform.position, Quaternion.identity);
+        snakeSegments.Add(headSegment.transform);
+        previousPositions.Add(headSegment.transform.position);
+        AddBodySegment(initialBodySize);
     }
     private void AddBodySegment(int addLength)
     {
@@ -68,7 +56,7 @@ public class SnakeController : MonoBehaviour
             // Calculate the initial position of the new body segment
             newSegmentPosition = (Vector2)snakeSegments[snakeSegments.Count - 1].position - direction * moveStep;
             // Instantiate and add the new body segment
-            GameObject bodySegment = Instantiate(snakeBody, newSegmentPosition, Quaternion.identity);
+            GameObject bodySegment = Instantiate(snakeBodyPrefab, newSegmentPosition, Quaternion.identity);
             snakeSegments.Add(bodySegment.transform);
             previousPositions.Add(bodySegment.transform.position);
         }
@@ -101,17 +89,14 @@ public class SnakeController : MonoBehaviour
 
         if (moveTimer >= moveStep / speed)
         {
-            // Store the current head position
-            Vector2 previousPosition = snakeHead.transform.position;
-
             // Move the snake head
-            snakeHead.transform.position = previousPosition + direction * moveStep;
+            snakeSegments[0].position = (Vector2)snakeSegments[0].position + direction * moveStep;
 
             // Wrap the snake head if it goes beyond the screen bounds
-            WrapAroundScreen(snakeHead.transform);
+            WrapAroundScreen(snakeSegments[0]);
 
             // Update previous positions list
-            previousPositions.Insert(0, snakeHead.transform.position);
+            previousPositions.Insert(0, snakeSegments[0].position);
             previousPositions.RemoveAt(previousPositions.Count - 1);
 
             // Move each body segment to the position of the segment in front of it
@@ -125,7 +110,7 @@ public class SnakeController : MonoBehaviour
 
     private void WrapAroundScreen(Transform segment)
     {
-        Vector3 screenPosition = mainCamera.WorldToViewportPoint(snakeHead.transform.position);
+        Vector3 screenPosition = mainCamera.WorldToViewportPoint(segment.position);
 
         if (screenPosition.x < 0)
         {
@@ -145,6 +130,6 @@ public class SnakeController : MonoBehaviour
             screenPosition.y = 0;
         }
 
-        snakeHead.transform.position = mainCamera.ViewportToWorldPoint(screenPosition);
+        segment.position = mainCamera.ViewportToWorldPoint(screenPosition);
     }
 }
