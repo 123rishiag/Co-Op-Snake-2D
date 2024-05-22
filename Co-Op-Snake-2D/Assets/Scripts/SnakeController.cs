@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class SnakeController : MonoBehaviour
@@ -10,9 +11,10 @@ public class SnakeController : MonoBehaviour
     public float speed = 1f; // Speed of the snake
     public float moveStep = 1f; // The distance the snake moves each step
     public Camera mainCamera; // Reference to the main camera
-
     public GameObject snakeHeadPrefab; // Object for the snake head Prefab
     public GameObject snakeBodyPrefab; // Object for the snake body Prefab
+    public LayerMask collisionLayer; // Layer which the snake can collide with
+
     private Vector2 direction = Vector2.left; // Initial direction of movement
     private List<Transform> snakeSegments; // List to hold snake segments
     private List<Vector2> previousPositions; // List to hold previous positions of the snake segments
@@ -26,12 +28,12 @@ public class SnakeController : MonoBehaviour
     }
 
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         InitializeBodySegment();
     }
 
-    void Update()
+    private void Update()
     {
         HandleInput();
     }
@@ -43,7 +45,7 @@ public class SnakeController : MonoBehaviour
 
     private void InitializeBodySegment()
     {
-        GameObject headSegment = Instantiate(snakeHeadPrefab, snakeHeadPrefab.transform.position, Quaternion.identity);
+        GameObject headSegment = Instantiate(snakeHeadPrefab, this.transform.position, Quaternion.identity, this.transform);
         snakeSegments.Add(headSegment.transform);
         previousPositions.Add(headSegment.transform.position);
         AddBodySegment(initialBodySize);
@@ -56,7 +58,7 @@ public class SnakeController : MonoBehaviour
             // Calculate the initial position of the new body segment
             newSegmentPosition = (Vector2)snakeSegments[snakeSegments.Count - 1].position - direction * moveStep;
             // Instantiate and add the new body segment
-            GameObject bodySegment = Instantiate(snakeBodyPrefab, newSegmentPosition, Quaternion.identity);
+            GameObject bodySegment = Instantiate(snakeBodyPrefab, newSegmentPosition, Quaternion.identity, this.transform);
             snakeSegments.Add(bodySegment.transform);
             previousPositions.Add(bodySegment.transform.position);
         }
@@ -87,7 +89,7 @@ public class SnakeController : MonoBehaviour
     {
         moveTimer += Time.fixedDeltaTime;
 
-        if (moveTimer >= moveStep / speed)
+        if (moveTimer >= moveStep / (speed * Time.fixedDeltaTime))
         {
             // Move the snake head
             snakeSegments[0].position = (Vector2)snakeSegments[0].position + direction * moveStep;

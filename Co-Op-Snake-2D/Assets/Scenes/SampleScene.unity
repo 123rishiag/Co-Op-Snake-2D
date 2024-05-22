@@ -404,7 +404,7 @@ Transform:
   m_GameObject: {fileID: 188556373}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 3.735408, y: 4.9661603, z: -0.106325634}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -423,11 +423,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initialBodySize: 10
-  speed: 7
+  speed: 500
   moveStep: 0.7
   mainCamera: {fileID: 519420031}
   snakeHeadPrefab: {fileID: 3328811613065628134, guid: f056f978e5b80184886c318d3f4a2b6e, type: 3}
   snakeBodyPrefab: {fileID: 7558181762298159681, guid: b8db81fb33f4a7040b7f6c666c7b4cce, type: 3}
+  collisionLayer:
+    serializedVersion: 2
+    m_Bits: 8
 --- !u!1 &205527295
 GameObject:
   m_ObjectHideFlags: 0
