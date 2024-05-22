@@ -5,9 +5,10 @@ using UnityEngine;
 public class SnakeCollisionController : MonoBehaviour
 {
     private LayerMask collisionLayer; // This will be fetched from the parent object
+    SnakeController snakeController;
     private void Start()
     {
-        SnakeController snakeController = GetComponentInParent<SnakeController>();
+        snakeController = GetComponentInParent<SnakeController>();
         if (snakeController != null)
         {
             collisionLayer = snakeController.collisionLayer;
@@ -32,6 +33,21 @@ public class SnakeCollisionController : MonoBehaviour
             #else
                 Application.Quit();
             #endif
+        }
+        else if (LayerMask.LayerToName(collider2D.gameObject.layer) == "Food")
+        {
+            FoodType foodType = FoodManager.Instance.GetFoodType(collider2D.gameObject.name);
+            if (foodType == FoodType.MassGainer)
+            {
+                snakeController.AddBodySegment(FoodManager.Instance.GetFoodAffectedLength(foodType));
+                snakeController.IncreaseScore(FoodManager.Instance.GetFoodAffectedScore(foodType));
+            }
+            else if (foodType == FoodType.MassBurner && snakeController.GetSnakeBodyLength() > FoodManager.Instance.GetFoodAffectedLength(foodType))
+            {
+                snakeController.ReduceBodySegment(FoodManager.Instance.GetFoodAffectedLength(foodType));
+                snakeController.DecreaseScore(FoodManager.Instance.GetFoodAffectedScore(foodType));
+            }
+            Destroy(collider2D.gameObject);
         }
     }
 }

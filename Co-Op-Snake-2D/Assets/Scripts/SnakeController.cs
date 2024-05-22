@@ -21,6 +21,9 @@ public class SnakeController : MonoBehaviour
 
     private float moveTimer;
 
+    public TextMeshProUGUI scoreText;
+    private int score = 0;
+
     private void Awake()
     {
         snakeSegments = new List<Transform>();
@@ -50,7 +53,7 @@ public class SnakeController : MonoBehaviour
         previousPositions.Add(headSegment.transform.position);
         AddBodySegment(initialBodySize);
     }
-    private void AddBodySegment(int addLength)
+    public void AddBodySegment(int addLength)
     {
         Vector2 newSegmentPosition;
         for (int i = 0; i < addLength; i++)
@@ -63,7 +66,17 @@ public class SnakeController : MonoBehaviour
             previousPositions.Add(bodySegment.transform.position);
         }
     }
-
+    public void ReduceBodySegment(int reduceLength)
+    {
+        for (int i = 0; i < reduceLength; i++)
+        {
+            // Drop the last body segment
+            GameObject bodySegment = snakeSegments[snakeSegments.Count - 1].gameObject;
+            previousPositions.RemoveAt(snakeSegments.Count - 1);
+            snakeSegments.RemoveAt(snakeSegments.Count - 1);
+            Destroy(bodySegment);
+        }
+    }
 
     private void HandleInput()
     {
@@ -133,5 +146,27 @@ public class SnakeController : MonoBehaviour
         }
 
         segment.position = mainCamera.ViewportToWorldPoint(screenPosition);
+    }
+    public int GetSnakeBodyLength()
+    {
+        return snakeSegments.Count - 1;
+    }
+    public void IncreaseScore(int incrementScore)
+    {
+        score += incrementScore;
+        RefreshUI();
+    }
+    public void DecreaseScore(int decrementScore)
+    {
+        score -= decrementScore;
+        if (score < 0)
+        {
+            score = 0;
+        }
+        RefreshUI();
+    }
+    private void RefreshUI()
+    {
+        scoreText.text = "Score " + LayerMask.LayerToName(this.gameObject.layer)+ ": " + score;
     }
 }
