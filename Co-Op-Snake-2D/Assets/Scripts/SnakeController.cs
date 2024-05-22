@@ -10,6 +10,13 @@ public class SnakeController : MonoBehaviour
     public int initialBodySize = 1; // Initial number of body segments
     public float speed = 1f; // Speed of the snake
     public float moveStep = 1f; // The distance the snake moves each step
+    public float powerUpCoolDownTimer; // The cooldown Timer of powerup
+    public int scoreBoostPowerUpRatio = 1; // The ratio by which Score will increase on Score Boost PowerUp
+
+    [HideInInspector]
+    public bool isShieldPowerUpActive = false; // The flag which denotes shield state on Shield PowerUp
+
+    public float speedUpPowerUpRatio = 1.0f; // The increment ratio by which Speed will increase on Speed Up PowerUp
     public Camera mainCamera; // Reference to the main camera
     public GameObject snakeHeadPrefab; // Object for the snake head Prefab
     public GameObject snakeBodyPrefab; // Object for the snake body Prefab
@@ -23,6 +30,8 @@ public class SnakeController : MonoBehaviour
 
     public TextMeshProUGUI scoreText;
     private int score = 0;
+    private int currentScoreBoostRatio = 1;
+    
 
     private void Awake()
     {
@@ -147,23 +156,45 @@ public class SnakeController : MonoBehaviour
 
         segment.position = mainCamera.ViewportToWorldPoint(screenPosition);
     }
+    public IEnumerator ActivateScoreBoostPowerUp()
+    {
+        currentScoreBoostRatio = scoreBoostPowerUpRatio;
+        yield return new WaitForSeconds(powerUpCoolDownTimer);
+        currentScoreBoostRatio = 1;
+    }
+    public IEnumerator ActivateShieldPowerUp()
+    {
+        isShieldPowerUpActive = true;
+        yield return new WaitForSeconds(powerUpCoolDownTimer);
+        isShieldPowerUpActive = false;
+    }
+    public IEnumerator ActivateSpeedUpPowerUp()
+    {
+        speed *= speedUpPowerUpRatio;
+        yield return new WaitForSeconds(powerUpCoolDownTimer);
+        speed /= speedUpPowerUpRatio;
+    }
+    
     public int GetSnakeBodyLength()
     {
         return snakeSegments.Count - 1;
     }
     public void IncreaseScore(int incrementScore)
     {
-        score += incrementScore;
+        score += incrementScore * currentScoreBoostRatio;
         RefreshUI();
     }
     public void DecreaseScore(int decrementScore)
     {
-        score -= decrementScore;
-        if (score < 0)
+        if (isShieldPowerUpActive == false)
         {
-            score = 0;
+            score -= decrementScore;
+            if (score < 0)
+            {
+                score = 0;
+            }
+            RefreshUI();
         }
-        RefreshUI();
     }
     private void RefreshUI()
     {
