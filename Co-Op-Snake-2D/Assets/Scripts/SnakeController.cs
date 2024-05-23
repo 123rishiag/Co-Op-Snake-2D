@@ -36,6 +36,7 @@ public class SnakeController : MonoBehaviour
     public KeyCode moveRight;
 
     public TextMeshProUGUI scoreText;
+    public TextMeshProUGUI specialAbilityPopUpMessage;
     private int score = 0;
     private int currentScoreBoostRatio = 1;
     
@@ -175,21 +176,30 @@ public class SnakeController : MonoBehaviour
     }
     public IEnumerator ActivateScoreBoostPowerUp()
     {
+        specialAbilityPopUpMessage.text = LayerMask.LayerToName(this.gameObject.layer) + " activates Score Boost for " + powerUpCoolDownTimer + " seconds.";
+        specialAbilityPopUpMessage.gameObject.SetActive(true);
         currentScoreBoostRatio = scoreBoostPowerUpRatio;
         yield return new WaitForSeconds(powerUpCoolDownTimer);
         currentScoreBoostRatio = 1;
+        specialAbilityPopUpMessage.gameObject.SetActive(false);
     }
     public IEnumerator ActivateShieldPowerUp()
     {
+        specialAbilityPopUpMessage.text = LayerMask.LayerToName(this.gameObject.layer) + " activates Shield Boost for " + powerUpCoolDownTimer + " seconds.";
+        specialAbilityPopUpMessage.gameObject.SetActive(true);
         isShieldPowerUpActive = true;
         yield return new WaitForSeconds(powerUpCoolDownTimer);
         isShieldPowerUpActive = false;
+        specialAbilityPopUpMessage.gameObject.SetActive(false);
     }
     public IEnumerator ActivateSpeedUpPowerUp()
     {
+        specialAbilityPopUpMessage.text = LayerMask.LayerToName(this.gameObject.layer) + " activates Speed Up for " + powerUpCoolDownTimer + " seconds.";
+        specialAbilityPopUpMessage.gameObject.SetActive(true);
         speed *= speedUpPowerUpRatio;
         yield return new WaitForSeconds(powerUpCoolDownTimer);
         speed /= speedUpPowerUpRatio;
+        specialAbilityPopUpMessage.gameObject.SetActive(false);
     }
     
     public int GetSnakeBodyLength()
