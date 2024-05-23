@@ -21,6 +21,7 @@ public class SnakeController : MonoBehaviour
     public GameObject snakeHeadPrefab; // Object for the snake head Prefab
     public GameObject snakeBodyPrefab; // Object for the snake body Prefab
     public GameObject gameOverObject; // Object for the Game Over
+    public GameObject gamePauseObject; // Object for the Game Over
     public LayerMask collisionLayer; // Layer which the snake can collide with
 
     private Vector2 direction = Vector2.left; // Initial direction of movement
@@ -110,6 +111,16 @@ public class SnakeController : MonoBehaviour
         else if (Input.GetKeyDown(moveRight) && direction != Vector2.left)
         {
             direction = Vector2.right;
+        }
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            // Notify the Game Pause Controller to check if all snakes are dead
+            GamePauseController gamePauseController = gamePauseObject.GetComponent<GamePauseController>();
+
+            if (gamePauseController != null)
+            {
+                gamePauseController.GamePause();
+            }
         }
     }
 
@@ -212,7 +223,7 @@ public class SnakeController : MonoBehaviour
     }
     public IEnumerator Die()
     {
-        // Notify the GameManager to check if all snakes are dead
+        // Notify the Game Over Controller to check if all snakes are dead
         GameOverController gameOverController = gameOverObject.GetComponent<GameOverController>();
         
         if (gameOverController != null)
