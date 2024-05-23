@@ -72,6 +72,7 @@ public class SnakeController : MonoBehaviour
     }
     public void AddBodySegment(int addLength)
     {
+        SoundManager.Instance.PlayEffect(SoundType.SnakeHeal);
         Vector2 newSegmentPosition;
         for (int i = 0; i < addLength; i++)
         {
@@ -85,6 +86,7 @@ public class SnakeController : MonoBehaviour
     }
     public void ReduceBodySegment(int reduceLength)
     {
+        SoundManager.Instance.PlayEffect(SoundType.SnakeHurt);
         for (int i = 0; i < reduceLength; i++)
         {
             // Drop the last body segment

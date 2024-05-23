@@ -33,12 +33,14 @@ public class LobbyController : MonoBehaviour
         {
             muteButtonText.text = "Mute: On"; // If currently unmuted, set to mute.
         }
+        SoundManager.Instance.MuteGame();
+        SoundManager.Instance.PlayEffect(SoundType.ButtonClick);
     }
 
     // Handles the play button functionality.
     private void PlayGame()
     {
-
+        SoundManager.Instance.PlayEffect(SoundType.ButtonClick);
         // Activate the lobby game object which can be a menu or a game scene.
         levelSelectorGameObject.SetActive(true);
     }
@@ -47,7 +49,7 @@ public class LobbyController : MonoBehaviour
     private void QuitGame()
     {
         // Check if the application is running in the Unity Editor.
-#if UNITY_EDITOR
+        #if UNITY_EDITOR
         {
             // Stop playing the scene in the Unity Editor.
             UnityEditor.EditorApplication.isPlaying = false;

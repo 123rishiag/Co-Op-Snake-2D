@@ -43,6 +43,7 @@ public class SnakeCollisionController : MonoBehaviour
         }
         else if (LayerMask.LayerToName(collider2D.gameObject.layer) == "PowerUp")
         {
+            SoundManager.Instance.PlayEffect(SoundType.SpecialAbilityPickup);
             PowerUpType powerUpType = PowerUpManager.Instance.GetPowerUpType(collider2D.gameObject.name);
             if (powerUpType == PowerUpType.ScoreBoostPowerUp)
             {

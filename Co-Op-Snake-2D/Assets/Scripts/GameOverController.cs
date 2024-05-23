@@ -48,6 +48,7 @@ public class GameOverController : MonoBehaviour
 
     public void GameOver()
     {
+        SoundManager.Instance.PlayEffect(SoundType.LevelOver);
         // If no active snakes are found, activate the GameOver prefab
         gameOverPrefab.SetActive(true);
     }

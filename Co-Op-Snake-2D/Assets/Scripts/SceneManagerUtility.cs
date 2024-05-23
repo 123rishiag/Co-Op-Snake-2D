@@ -6,6 +6,7 @@ public static class SceneManagerUtility
     // Handles loading a specific scene by its index.
     public static void LoadScene(int sceneIndex)
     {
+        SoundManager.Instance.PlayEffect(SoundType.LevelStart);
         // Load the scene with the provided index.
         SceneManager.LoadScene(sceneIndex);
     }
@@ -13,6 +14,7 @@ public static class SceneManagerUtility
     // Reloads the current scene.
     public static void ReloadCurrentScene()
     {
+        SoundManager.Instance.PlayEffect(SoundType.LevelStart);
         // Retrieve the index of the currently active scene.
         int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
         // Use LoadScene to reload the current scene using its index.
@@ -22,6 +24,7 @@ public static class SceneManagerUtility
     // Loads the main menu scene, which is at index 0.
     public static void LoadMainMenu()
     {
+        SoundManager.Instance.PlayEffect(SoundType.ButtonQuit);
         // Load the main menu scene using index 0.
         SceneManager.LoadScene(0);
     }
