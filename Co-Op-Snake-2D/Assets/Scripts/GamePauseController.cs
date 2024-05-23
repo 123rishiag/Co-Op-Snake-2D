@@ -18,6 +18,7 @@ public class GamePauseController : MonoBehaviour
     }
     private void ResumeLevel()
     {
+        SoundManager.Instance.PlayEffect(SoundType.LevelPause);
         // Activate the GamePause prefab
         gamePausePrefab.SetActive(false);
         Time.timeScale = 1f;
@@ -30,6 +31,7 @@ public class GamePauseController : MonoBehaviour
 
     public void GamePause()
     {
+        SoundManager.Instance.PlayEffect(SoundType.LevelPause);
         Time.timeScale = 0f;
         // Activate the GamePause prefab
         gamePausePrefab.SetActive(true);
