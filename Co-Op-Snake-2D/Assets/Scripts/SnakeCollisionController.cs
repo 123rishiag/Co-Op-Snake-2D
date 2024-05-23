@@ -24,15 +24,7 @@ public class SnakeCollisionController : MonoBehaviour
         // Check for self-collision using layers and tags
         if (collider2D.gameObject.layer == collisionLayerIndex && snakeController.isShieldPowerUpActive == false)
         {
-            // Check if the application is running in the Unity Editor.
-            #if UNITY_EDITOR
-            {
-                // Stop playing the scene in the Unity Editor.
-                UnityEditor.EditorApplication.isPlaying = false;
-            }
-            #else
-                Application.Quit();
-            #endif
+            StartCoroutine(snakeController.Die());
         }
         else if (LayerMask.LayerToName(collider2D.gameObject.layer) == "Food")
         {

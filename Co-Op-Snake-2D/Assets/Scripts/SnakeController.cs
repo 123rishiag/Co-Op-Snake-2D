@@ -20,6 +20,7 @@ public class SnakeController : MonoBehaviour
     public Camera mainCamera; // Reference to the main camera
     public GameObject snakeHeadPrefab; // Object for the snake head Prefab
     public GameObject snakeBodyPrefab; // Object for the snake body Prefab
+    public GameObject gameOverObject; // Object for the Game Over
     public LayerMask collisionLayer; // Layer which the snake can collide with
 
     private Vector2 direction = Vector2.left; // Initial direction of movement
@@ -184,6 +185,10 @@ public class SnakeController : MonoBehaviour
     {
         return snakeSegments.Count - 1;
     }
+    public int GetScore()
+    {
+        return score;
+    }
     public void IncreaseScore(int incrementScore)
     {
         score += incrementScore * currentScoreBoostRatio;
@@ -204,5 +209,19 @@ public class SnakeController : MonoBehaviour
     private void RefreshUI()
     {
         scoreText.text = "Score " + LayerMask.LayerToName(this.gameObject.layer)+ ": " + score;
+    }
+    public IEnumerator Die()
+    {
+        // Notify the GameManager to check if all snakes are dead
+        GameOverController gameOverController = gameOverObject.GetComponent<GameOverController>();
+        
+        if (gameOverController != null)
+        {
+            gameOverController.UpdateWinner();
+            yield return new WaitForSeconds(0.1f);
+            gameOverController.GameOver();
+            // Deactivate the snake
+            this.gameObject.SetActive(false);
+        }
     }
 }
