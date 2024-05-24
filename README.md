@@ -1,6 +1,6 @@
 # Co-Op Snake 2D
 
-![Gameplay Video](https://www.loom.com/share/40a3ddbdbeff4dafb783bdcd49f2e287?sid=d788edd2-331a-4785-8577-85a8c434aee7)
+[Gameplay Video](https://www.loom.com/share/40a3ddbdbeff4dafb783bdcd49f2e287?sid=d788edd2-331a-4785-8577-85a8c434aee7)
 
 ## Overview
 
