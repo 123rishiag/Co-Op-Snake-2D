@@ -1,9 +1,6 @@
 # Co-Op Snake 2D
 
-[Gameplay Video](https://www.loom.com/share/40a3ddbdbeff4dafb783bdcd49f2e287?sid=d788edd2-331a-4785-8577-85a8c434aee7)
-
 ## Overview
-
 A modern take on the classic snake game, with added features like power-ups, flexible game parameters, and a cooperative mode for two players. The goal is to navigate your snake, eat food, grow longer, and avoid biting yourself or colliding with another player’s snake.
 
 ## Features
