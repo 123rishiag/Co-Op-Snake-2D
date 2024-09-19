@@ -43,3 +43,7 @@ A modern take on the classic snake game, with added features like power-ups, fle
 ## Video Demo
 
 [Watch the Video Demo](https://www.loom.com/share/40a3ddbdbeff4dafb783bdcd49f2e287?sid=7abd634e-2f5b-472a-908a-aaf80d07af36)
+
+## Play Link
+
+[Play the Game](https://outscal.com/narishabhgarg/game/play-co-op-snake-2d-2-game)
